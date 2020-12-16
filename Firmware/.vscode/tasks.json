@@ -1,0 +1,120 @@
+{
+	"version": "2.0.0",/*
+	"env": {
+		"MCU_TARGET": "GD32VF103RBT6",
+		"JLINK_SPEED": "8000", // хрень неработающая...
+	},*/
+	"tasks": [
+		{
+			"label": "Make Build",
+			"type": "shell",
+			"command": "make -s -j 4 all",
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Make Clean",
+			"type": "shell",
+			"command": "make -s clean",
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Check Flash Size",
+			"type": "shell",
+			"command": "riscv-none-embed-nm.exe --print-size --size-sort --radix=d build/firmware.elf",
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Write to Flash MCU",
+			"type": "shell",
+			"command": "JLink.exe",
+			"args": [
+				"-Device",
+				"GD32VF103RBT6",
+				"-jtagconf",
+				"-1,-1",
+				"-If",
+				"JTAG",
+				"-Speed",
+				"4000",
+				"JLink/FlashMCU.jlink"
+			],
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Read Flash from MCU",
+			"type": "shell",
+			"command": "JLink.exe",
+			"args": [
+				"-Device",
+				"GD32VF103RBT6",
+				"-jtagconf",
+				"-1,-1",
+				"-If",
+				"JTAG",
+				"-Speed",
+				"8000",
+				"JLink/ReadMCU.jlink"
+			],
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Erase Flash MCU",
+			"type": "shell",
+			"command": "JLink.exe",
+			"args": [
+				"-Device",
+				"GD32VF103RBT6",
+				"-jtagconf",
+				"-1,-1",
+				"-If",
+				"JTAG",
+				"-Speed",
+				"8000",
+				"JLink/EraseMCU.jlink"
+			],
+			"options": {
+				"cwd": "${workspaceRoot}",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["/C"]
+				}
+			},
+			"problemMatcher": []
+		}
+	]
+}
